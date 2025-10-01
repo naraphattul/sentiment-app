@@ -6,6 +6,7 @@ from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import requests
 
+#commits
 # 1. กำหนดค่าคงที่
 MODEL_FILE = 'sentiment_model.pkl'
 TOKENIZER_NAME = "distilbert-base-uncased" 
