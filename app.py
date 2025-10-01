@@ -12,7 +12,7 @@ TOKENIZER_NAME = "distilbert-base-uncased"
 id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
 
 # 2. เริ่มต้น Flask
-app = Flask(__name__, template_folder='.')
+app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app)
 
 # 3. โหลด Model และ Tokenizer
@@ -107,4 +107,4 @@ def predict():
         return jsonify({'error': f'An error occurred during prediction: {str(e)}. Please check backend terminal for details.'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
+    app.run(host='0.0.0.0', port=8080, debug=True)
