@@ -1,4 +1,3 @@
-import pickle
 import os
 import torch
 from flask import Flask, request, jsonify, render_template
@@ -9,6 +8,10 @@ import requests
 MODEL_NAME = "Naraphat/sentiment_model"
 TOKENIZER_NAME = "distilbert-base-uncased"
 
+app = Flask(__name__, template_folder='templates', static_folder='static')
+CORS(app)
+
+id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
 tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 model.eval()
