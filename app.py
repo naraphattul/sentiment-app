@@ -6,7 +6,6 @@ from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import requests
 
-# commits
 # 1. กำหนดค่าคงที่
 MODEL_FILE = 'sentiment_model.pkl'
 TOKENIZER_NAME = "distilbert-base-uncased" 
@@ -14,7 +13,7 @@ id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
 
 # 2. เริ่มต้น Flask
 app = Flask(__name__, template_folder='templates', static_folder='static')
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # 3. โหลด Model และ Tokenizer
 model = None
@@ -108,4 +107,5 @@ def predict():
         return jsonify({'error': f'An error occurred during prediction: {str(e)}. Please check backend terminal for details.'}), 500
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=8080, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
