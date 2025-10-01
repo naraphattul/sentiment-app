@@ -1,0 +1,248 @@
+:root {
+  --green-dark: #556B2F;
+  --green-main: #8FA31E;
+  --green-light: #C6D870;
+  --cream-light: #EFF5D2;
+  --text-color: #2E2E2E;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--cream-light);
+  font-family: 'League Spartan', sans-serif;
+  overflow: hidden; /* ปิด scrollbar ถ้ามี */
+  padding-bottom: 80px;
+}
+
+.container {
+  background: white;
+  padding: 48px 60px;
+  border-radius: 40px;
+  box-shadow: 0 10px 25px rgba(85, 107, 47, 0.2);
+  text-align: center;
+  width: 600px;
+}
+
+/* h1 {
+  font-size: 2.4rem;
+  margin-bottom: 45px;
+  color: var(--green-dark);
+} */
+
+h1 {
+  font-size: 2.4rem;
+  align-items: baseline;
+  font-family: 'League Spartan', sans-serif;
+  color: var(--green-dark); /* หรือเปลี่ยนเป็นสีที่คุณต้องการ */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* ระยะห่างระหว่างข้อความกับ icon */
+  margin-bottom: 5px;
+}
+
+h1 i {
+
+  font-size: 2.4rem;
+  color: var(--green-dark);
+  position: relative;
+  bottom: 3px;
+}
+
+.subtitle {
+  font-size: 0.95rem;
+  color: var(--green-dark);
+  margin-bottom: 30px;
+}
+
+
+/* Input group */
+.input-group {
+  text-align: left;
+  margin-bottom: 16px;
+}
+
+.input-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--green-dark);
+  margin-bottom: 8px;
+}
+
+/* Glass Input */
+.glass-input {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid var(--green-light);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  font-size: 1rem;
+  transition: 0.3s ease;
+  font-family: 'League Spartan', sans-serif;
+}
+
+.glass-input:focus {
+  outline: none;
+  border-color: var(--green-main);
+  box-shadow: 0 0 8px rgba(143, 163, 30, 0.3);
+  transform: scale(1.02);
+}
+
+/* Button */
+button {
+  background-color: var(--green-main);
+  color: white;
+  border: none;
+  border-radius: 40px;
+  padding: 12px 32px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(85, 107, 47, 0.2);
+  /* margin-bottom: 15px; */
+}
+
+button:hover {
+  background-color: var(--green-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(85, 107, 47, 0.3);
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+/* Result Text */
+
+#resulttext {
+  font-weight: bold;
+  font-size: 1.75rem;
+  margin-bottom: 18px;
+  transition: color 0.4s ease;
+}
+
+.result-negative {
+  color: #d9534f; /* สีแดงเหมือน bar */
+}
+
+.result-neutral {
+  color: #f0ad4e; /* สีส้มเหมือน bar */
+}
+
+.result-positive {
+  color: #5cb85c; /* สีเขียวเหมือน bar */
+}
+
+.hidden {
+  display: none;
+}
+
+.hiddentext {
+  margin-top: 25px;
+  text-align: center;
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hiddentext.hidden {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* แถวของแต่ละ sentiment */
+.sentiment-row {
+  text-align: left;
+  margin: 14px 0;
+}
+
+.sentiment-row span {
+  display: block;
+  font-weight: bold;
+  color: #4b5c2f;
+  font-size: 14px;
+  margin-bottom: 6px; /* เว้นระยะระหว่าง label กับ bar */
+}
+
+/* wrapper ห่อแถบกับเปอร์เซ็นต์ */
+.sentiment-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* ระยะห่างระหว่างแถบกับ % */
+}
+
+/* กล่องแถบ */
+.sentiment-bar {
+  flex: 1;
+  height: 28px;
+  background-color: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ตัวแถบ */
+.bar {
+  height: 100%;
+  border-radius: 20px 0 0 20px;
+  transition: width 0.8s ease;
+}
+
+/* สีแต่ละประเภท */
+.bar.negative {
+  background-color: #d9534f;
+}
+.bar.neutral {
+  background-color: #f0ad4e;
+}
+.bar.positive {
+  background-color: #5cb85c;
+}
+
+/* ตัวเลขด้านหลังแท่ง */
+.percent-label {
+  font-weight: bold;
+  font-size: 20x;
+  color: var(--green-dark);
+  min-width: 40px;
+  text-align: right;
+  margin-top: 10px;
+}
+
+/* Footer */
+
+footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+footer {
+  margin-top: 70px; /* เพิ่มระยะห่างจากกล่องหลัก */
+  padding: 10px 8px; /* ลดขนาดความสูงของ footer */
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--green-dark);
+  background: rgba(198, 216, 112, 0.3);
+  border-top: 2px solid var(--green-light);
+  line-height: 1.4;
+  border-radius: 0 0 15px 15px;
+}
+
+footer p {
+  margin: 4px 0;
+  font-family: 'League Spartan', sans-serif;
+}

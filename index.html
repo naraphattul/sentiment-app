@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=League+Spartan" rel="stylesheet">
+  <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+  />
+  <title>ZENTI.TEXT</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="container">
+    <h1>
+      ZENTI.TEXT
+      <i class="fa-regular fa-keyboard"></i>
+    </h1>
+
+    <p class="subtitle">A website for Sentiment Analysis</p>
+
+    <div class="input-group">
+      <label for="textInput">Text</label>
+      <input type="text" id="textInput" class="glass-input" placeholder="Enter your text...">
+    </div>
+
+    <button id="submitbtn">Analyze</button>
+
+    <!-- ส่วนแสดงผล (ซ่อนก่อน) -->
+    <div class="hiddentext hidden" id="resultBox">
+      <p id="resulttext"></p>
+
+      <!-- แถบแยกกัน 3 แถว -->
+      <div class="sentiment-row">
+        <span>Negative</span>
+        <div class="sentiment-wrapper">
+          <div class="sentiment-bar">
+            <div class="bar negative" id="neg-bar"></div>
+          </div>
+          <span class="percent-label" id="neg-label">0%</span>
+        </div>
+      </div>
+
+      <div class="sentiment-row">
+        <span>Neutral</span>
+        <div class="sentiment-wrapper">
+          <div class="sentiment-bar">
+            <div class="bar neutral" id="neu-bar"></div>
+          </div>
+          <span class="percent-label" id="neu-label">0%</span>
+        </div>
+      </div>
+
+      <div class="sentiment-row">
+        <span>Positive</span>
+        <div class="sentiment-wrapper">
+          <div class="sentiment-bar">
+            <div class="bar positive" id="pos-bar"></div>
+          </div>
+          <span class="percent-label" id="pos-label">0%</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer>
+    <p>
+      © 2025 This website is a part of the course <strong>Data Engineering (204426)</strong><br>
+      Chiang Mai University, Data Science Program<br>
+      <strong>Group 10 Comkemkang</strong>
+    </p>
+  </footer>
+
+<!-- วางไว้ก่อนปิด body -->
+  <script>
+    const INPUT_ID = 'textInput'; 
+    const SUBMIT_ID = 'submitbtn';
+    const RESULT_ID = 'resulttext';
+    const BOX_ID = 'resultBox'; 
+
+    document.getElementById(SUBMIT_ID).addEventListener('click', async () => {
+      const input = document.getElementById(INPUT_ID);
+      const resultText = document.getElementById(RESULT_ID);
+      const resultBox = document.getElementById(BOX_ID);
+
+      const negBar = document.getElementById("neg-bar");
+      const neuBar = document.getElementById("neu-bar");
+      const posBar = document.getElementById("pos-bar");
+
+      // รีเซ็ตทุกครั้งก่อนเริ่ม
+      negBar.style.width = "0%";
+      neuBar.style.width = "0%";
+      posBar.style.width = "0%";
+
+      // อัปเดตเลขด้านนอกแท่ง
+      document.getElementById("neg-label").textContent = "0%";
+      document.getElementById("neu-label").textContent = "0%";
+      document.getElementById("pos-label").textContent = "0%";
+
+      // ถ้ายังไม่กรอก
+      if (!input.value.trim()) {
+        resultText.textContent = 'Please Input Your Text!';
+        resultBox.classList.remove("hidden");
+        return;
+      }
+
+      // แสดงกล่องผลลัพธ์
+      resultBox.classList.remove("hidden");
+      resultText.textContent = 'Analyze...';
+
+      try {
+        // ส่งข้อความไป backend
+        const response = await fetch('http://127.0.0.1:5000/predict', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ text: input.value })
+        });
+
+        if (!response.ok) {
+          resultText.textContent = `Error ${response.status}`;
+          return;
+        }
+
+        const data = await response.json();
+
+        // แปลง sentiment ให้ตัวแรกใหญ่ เช่น Positive
+        let sentimentRaw = data.sentiment || "neutral";
+        const sentiment = sentimentRaw.charAt(0).toUpperCase() + sentimentRaw.slice(1).toLowerCase();
+
+        // จัดการสีผลลัพธ์
+        resultText.classList.remove("result-negative", "result-neutral", "result-positive");
+        resultText.textContent = `${sentiment}`;
+        resultText.classList.add(`result-${sentiment.toLowerCase()}`);
+
+        // แปลงเป็น %
+        const neg = data.negative;
+        const neu = data.neutral;
+        const pos = data.positive;
+
+        const negP = Math.round(neg * 100);
+        const neuP = Math.round(neu * 100);
+        const posP = Math.round(pos * 100);
+
+        // อัปเดตความกว้าง + ตัวเลขด้านนอก
+        setTimeout(() => {
+          negBar.style.width = negP + "%";
+          neuBar.style.width = neuP + "%";
+          posBar.style.width = posP + "%";
+
+          document.getElementById("neg-label").textContent = negP + "%";
+          document.getElementById("neu-label").textContent = neuP + "%";
+          document.getElementById("pos-label").textContent = posP + "%";
+        }, 100);
+
+      } catch (err) {
+        console.error(err);
+        resultText.textContent = 'Error: Cannot connect to backend.';
+        resultBox.classList.remove("hidden");
+      }
+    });
+  </script>
+</body>
+</html>
