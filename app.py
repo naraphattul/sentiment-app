@@ -12,8 +12,8 @@ TOKENIZER_NAME = "distilbert-base-uncased"
 id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
 
 # 2. เริ่มต้น Flask
-app = Flask(__name__, template_folder='templates', static_folder='static')
-CORS(app, resources={r"/*": {"origins": "*"}})
+app = Flask(__name__, template_folder='.')
+CORS(app)
 
 # 3. โหลด Model และ Tokenizer
 model = None
