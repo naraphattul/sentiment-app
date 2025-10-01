@@ -7,22 +7,16 @@ from transformers import AutoTokenizer
 import requests
 import torch.nn.functional as F
 
-# -------------------------------------------------
 # 1. ตั้งค่าชื่อไฟล์และ Tokenizer
-# -------------------------------------------------
 MODEL_FILE = 'sentiment_model.pkl'
 TOKENIZER_NAME = "distilbert-base-uncased"
 id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
 
-# -------------------------------------------------
 # 2. เริ่มต้น Flask
-# -------------------------------------------------
 app = Flask(__name__, template_folder='templates', static_folder='static')
 CORS(app, resources={r"/*": {"origins": "*"}})
 
-# -------------------------------------------------
 # 3. โหลด Model และ Tokenizer
-# -------------------------------------------------
 model = None
 tokenizer = None
 
@@ -47,23 +41,19 @@ try:
         model = pickle.load(f)
 
     model.eval()  # ตั้งโหมดประเมินผล
-    print(f"✅ Model loaded successfully from {MODEL_FILE}!")
+    print(f"Model loaded successfully from {MODEL_FILE}!")
 
 except Exception as e:
-    print(f"❌ ERROR: Failed to load model or tokenizer. Detail: {e}")
+    print(f"ERROR: Failed to load model or tokenizer. Detail: {e}")
     model = None
 
-# -------------------------------------------------
 # 4. หน้าเว็บหลัก
-# -------------------------------------------------
 @app.route('/')
 @app.route('/index.html')
 def index():
     return render_template('index.html')
-
-# -------------------------------------------------
+    
 # 5. API สำหรับทำนาย Sentiment
-# -------------------------------------------------
 @app.route('/predict', methods=['POST'])
 def predict():
     if model is None or tokenizer is None:
@@ -108,9 +98,7 @@ def predict():
         print(f"Prediction Error: {e}")
         return jsonify({'error': f'Prediction failed: {str(e)}'}), 500
 
-# -------------------------------------------------
 # 6. Run Server
-# -------------------------------------------------
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
