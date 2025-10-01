@@ -6,8 +6,6 @@ from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import requests
 
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
-
 MODEL_NAME = "Naraphat/sentiment_model"
 TOKENIZER_NAME = "distilbert-base-uncased"
 
