@@ -119,7 +119,7 @@
         const response = await fetch('/predict', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ text: userInput })
+          body: JSON.stringify({ text: input.value })
         });
 
 
@@ -164,7 +164,7 @@
         resultText.textContent = 'Error: Cannot connect to backend.';
         resultBox.classList.remove("hidden");
       }
-    });
+    }); 
   </script>
 </body>
 </html>
