@@ -12,7 +12,7 @@ TOKENIZER_NAME = "distilbert-base-uncased"
 tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_NAME)
 model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 model.eval()
-print("✅ Model loaded directly from Hugging Face!")
+print("Model loaded directly from Hugging Face!")
 
         
     model.eval() # ตั้งค่าโมเดลเป็นโหมดประเมินผล
