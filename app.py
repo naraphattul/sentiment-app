@@ -6,35 +6,16 @@ from flask_cors import CORS
 from transformers import AutoTokenizer, AutoModelForSequenceClassification
 import requests
 
-# 1. กำหนดค่าคงที่
-MODEL_FILE = 'sentiment_model.pkl'
-TOKENIZER_NAME = "distilbert-base-uncased" 
-id2label_mapping = {0: "positive", 1: "neutral", 2: "negative"}
+from transformers import AutoTokenizer, AutoModelForSequenceClassification
 
-# 2. เริ่มต้น Flask
-app = Flask(__name__, template_folder='templates', static_folder='static')
-CORS(app, resources={r"/*": {"origins": "*"}})
+MODEL_NAME = "Naraphat/sentiment_model"
+TOKENIZER_NAME = "distilbert-base-uncased"
 
-# 3. โหลด Model และ Tokenizer
-model = None
-tokenizer = None
-try:
-    # โหลด Tokenizer
-    tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_NAME)
-    print("Tokenizer loaded successfully!")
+tokenizer = AutoTokenizer.from_pretrained(TOKENIZER_NAME)
+model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+model.eval()
+print("✅ Model loaded directly from Hugging Face!")
 
-    url = "https://huggingface.co/Naraphat/sentiment_model/resolve/main/sentiment_model.pkl"
-
-    if not os.path.exists("sentiment_model.pkl"):
-        print("Downloading model from Hugging Face ...")
-        resp = requests.get(url)
-        with open("sentiment_model.pkl", "wb") as f:
-            f.write(resp.content)
-        print("Model downloaded successfully!")
-
-    # โหลดโมเดลทั้งก้อนจากไฟล์ .pkl
-    with open(MODEL_FILE, 'rb') as file:
-        model = pickle.load(file)
         
     model.eval() # ตั้งค่าโมเดลเป็นโหมดประเมินผล
     print(f"Model Object loaded successfully from {MODEL_FILE} and ready for inference!")
