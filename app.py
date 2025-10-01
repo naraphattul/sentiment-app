@@ -14,18 +14,6 @@ model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
 model.eval()
 print("Model loaded directly from Hugging Face!")
 
-        
-    model.eval() # ตั้งค่าโมเดลเป็นโหมดประเมินผล
-    print(f"Model Object loaded successfully from {MODEL_FILE} and ready for inference!")
-
-except FileNotFoundError:
-    print(f"ERROR: Model file not found at {MODEL_FILE}. Please ensure it is in the same directory.")
-    model = None
-except Exception as e:
-    # แสดง Error ที่เกิดขึ้น
-    print(f"ERROR: Failed to load model or tokenizer. Detail: {e}")
-    model = None
-    
 # 4. หน้าหลัก
 @app.route('/')
 @app.route('/index.html')
